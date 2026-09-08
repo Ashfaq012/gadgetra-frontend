@@ -4,14 +4,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          900: '#312e81',
+        // Gadgetra.lk brand palette — see brand kit README for usage rules.
+        ink: '#1A1A1A',
+        charcoal: '#2E2E2E',
+        paper: '#F7F6F3',
+        hairline: '#E3E0D9',
+        muted: '#6B6B6B',
+        gold: {
+          DEFAULT: '#E5AC2F',
+          deep: '#C08F1E',
+          tint: '#FBF1D9',
         },
+      },
+      fontFamily: {
+        sans: [
+          'Poppins',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'sans-serif',
+        ],
       },
     },
   },

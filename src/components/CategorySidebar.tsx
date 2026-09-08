@@ -9,7 +9,7 @@ export default function CategorySidebar({ activeCategoryId }: { activeCategoryId
 
   const linkClass = (isActive: boolean) =>
     `flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-      isActive ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
+      isActive ? 'bg-ink text-white' : 'text-muted hover:bg-paper hover:text-charcoal'
     }`
 
   function close() {
@@ -20,7 +20,7 @@ export default function CategorySidebar({ activeCategoryId }: { activeCategoryId
     <>
       <button
         onClick={() => setOpen(true)}
-        className="mb-6 flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
+        className="mb-6 flex items-center gap-2 rounded-full border border-hairline px-4 py-2 text-sm font-medium text-charcoal transition-colors hover:bg-paper"
       >
         <span aria-hidden>☰</span>
         Categories
@@ -30,7 +30,7 @@ export default function CategorySidebar({ activeCategoryId }: { activeCategoryId
       <div
         onClick={close}
         aria-hidden
-        className={`fixed inset-0 z-40 bg-black/40 transition-opacity ${
+        className={`fixed inset-0 z-40 bg-ink/50 transition-opacity ${
           open ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
       />
@@ -42,11 +42,11 @@ export default function CategorySidebar({ activeCategoryId }: { activeCategoryId
         }`}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-semibold text-slate-900">Categories</h2>
+          <h2 className="font-semibold text-charcoal">Categories</h2>
           <button
             onClick={close}
             aria-label="Close categories"
-            className="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+            className="rounded-full p-1 text-muted hover:bg-paper hover:text-charcoal"
           >
             ✕
           </button>

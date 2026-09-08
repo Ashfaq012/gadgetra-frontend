@@ -9,11 +9,11 @@ export default function OrderPlacedPage() {
       <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
         ✓
       </div>
-      <h1 className="text-2xl font-bold text-slate-900">Order sent!</h1>
-      <p className="mt-3 text-slate-600">
+      <h1 className="text-2xl font-bold text-charcoal">Order sent!</h1>
+      <p className="mt-3 text-muted">
         {orderRef && (
           <>
-            Reference <span className="font-semibold">{orderRef}</span> —{' '}
+            Reference <span className="font-semibold text-charcoal">{orderRef}</span> —{' '}
           </>
         )}
         we've opened WhatsApp with your order details. Send the message to confirm, and we'll get
@@ -21,7 +21,7 @@ export default function OrderPlacedPage() {
       </p>
       <Link
         to="/shop"
-        className="mt-8 inline-block rounded-full bg-slate-900 px-6 py-3 font-semibold text-white hover:bg-brand-600"
+        className="mt-8 inline-block rounded-full bg-gold px-6 py-3 font-semibold text-ink hover:bg-gold-deep"
       >
         Continue Shopping
       </Link>

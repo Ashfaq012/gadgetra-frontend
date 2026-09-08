@@ -37,8 +37,8 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold text-slate-900">Your cart is empty</h1>
-        <Link to="/shop" className="mt-6 inline-block text-brand-600 hover:underline">
+        <h1 className="text-2xl font-bold text-charcoal">Your cart is empty</h1>
+        <Link to="/shop" className="mt-6 inline-block text-charcoal hover:text-gold-deep hover:underline">
           ← Go to shop
         </Link>
       </div>
@@ -104,49 +104,49 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">Checkout</h1>
+      <h1 className="mb-6 text-2xl font-bold text-charcoal">Checkout</h1>
 
       <div className="grid gap-8 md:grid-cols-2">
         <form onSubmit={handlePlaceOrder} className="flex flex-col gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Full Name</label>
+            <label className="mb-1 block text-sm font-medium text-charcoal">Full Name</label>
             <input
               required
               value={customer.name}
               onChange={handleChange('name')}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-full rounded-lg border border-hairline px-3 py-2 focus:border-gold focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Phone Number</label>
+            <label className="mb-1 block text-sm font-medium text-charcoal">Phone Number</label>
             <input
               required
               type="tel"
               placeholder="07X XXX XXXX"
               value={customer.phone}
               onChange={handleChange('phone')}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-full rounded-lg border border-hairline px-3 py-2 focus:border-gold focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Delivery Address</label>
+            <label className="mb-1 block text-sm font-medium text-charcoal">Delivery Address</label>
             <textarea
               required
               rows={2}
               value={customer.address}
               onChange={handleChange('address')}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-full rounded-lg border border-hairline px-3 py-2 focus:border-gold focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">District</label>
+            <label className="mb-1 block text-sm font-medium text-charcoal">District</label>
             <select
               value={customer.district}
               onChange={handleChange('district')}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-full rounded-lg border border-hairline px-3 py-2 focus:border-gold focus:outline-none"
             >
               {DISTRICTS.map((d) => (
                 <option key={d} value={d}>
@@ -157,14 +157,14 @@ export default function CheckoutPage() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-charcoal">
               Order Notes (optional)
             </label>
             <textarea
               rows={2}
               value={customer.notes}
               onChange={handleChange('notes')}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-full rounded-lg border border-hairline px-3 py-2 focus:border-gold focus:outline-none"
             />
           </div>
 
@@ -177,17 +177,17 @@ export default function CheckoutPage() {
           >
             {submitting ? 'Placing Order…' : 'Place Order via WhatsApp'}
           </button>
-          <p className="text-center text-xs text-slate-500">
+          <p className="text-center text-xs text-muted">
             You'll be taken to WhatsApp with your order pre-filled. We'll confirm payment details
             with you there.
           </p>
         </form>
 
-        <div className="h-fit rounded-xl border border-slate-200 bg-white p-5">
-          <h2 className="mb-4 font-semibold text-slate-900">Order Summary</h2>
+        <div className="h-fit rounded-xl border border-hairline bg-white p-5">
+          <h2 className="mb-4 font-semibold text-charcoal">Order Summary</h2>
           <ul className="mb-4 flex flex-col gap-2 text-sm">
             {items.map(({ product, qty }) => (
-              <li key={product.id} className="flex justify-between text-slate-600">
+              <li key={product.id} className="flex justify-between text-muted">
                 <span>
                   {product.name} × {qty}
                 </span>
@@ -196,11 +196,11 @@ export default function CheckoutPage() {
             ))}
           </ul>
 
-          <div className="mb-4 border-t border-slate-200 pt-4">
+          <div className="mb-4 border-t border-hairline pt-4">
             {appliedDiscount?.valid ? (
-              <div className="flex items-center justify-between rounded-lg bg-green-50 px-3 py-2 text-sm">
-                <span className="font-medium text-green-700">Code "{appliedDiscount.code}" applied</span>
-                <button type="button" onClick={handleRemoveDiscount} className="text-green-700 underline">
+              <div className="flex items-center justify-between rounded-lg bg-gold-tint px-3 py-2 text-sm">
+                <span className="font-medium text-gold-deep">Code "{appliedDiscount.code}" applied</span>
+                <button type="button" onClick={handleRemoveDiscount} className="text-gold-deep underline">
                   Remove
                 </button>
               </div>
@@ -210,13 +210,13 @@ export default function CheckoutPage() {
                   value={discountInput}
                   onChange={(e) => setDiscountInput(e.target.value)}
                   placeholder="Discount code"
-                  className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+                  className="flex-1 rounded-lg border border-hairline px-3 py-2 text-sm focus:border-gold focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={handleApplyDiscount}
                   disabled={checkingDiscount}
-                  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600 disabled:opacity-60"
+                  className="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-charcoal disabled:opacity-60"
                 >
                   {checkingDiscount ? '...' : 'Apply'}
                 </button>
@@ -225,27 +225,27 @@ export default function CheckoutPage() {
             {discountError && <p className="mt-1 text-xs text-red-600">{discountError}</p>}
           </div>
 
-          <div className="space-y-1 border-t border-slate-200 pt-3 text-sm">
-            <div className="flex justify-between text-slate-600">
+          <div className="space-y-1 border-t border-hairline pt-3 text-sm">
+            <div className="flex justify-between text-muted">
               <span>Subtotal</span>
               <span>{formatCurrency(subtotal)}</span>
             </div>
             {discountAmount > 0 && (
-              <div className="flex justify-between text-green-700">
+              <div className="flex justify-between text-gold-deep">
                 <span>Discount</span>
                 <span>-{formatCurrency(discountAmount)}</span>
               </div>
             )}
-            <div className="flex justify-between text-slate-600">
+            <div className="flex justify-between text-muted">
               <span>Shipping ({customer.district})</span>
               <span>{estimatedShipping === 0 ? 'FREE' : formatCurrency(estimatedShipping)}</span>
             </div>
             {estimatedShipping > 0 && (
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted">
                 Free shipping on orders over {formatCurrency(FREE_SHIPPING_THRESHOLD)}
               </p>
             )}
-            <div className="flex justify-between pt-2 text-base font-bold text-slate-900">
+            <div className="flex justify-between pt-2 text-base font-bold text-charcoal">
               <span>Total</span>
               <span>{formatCurrency(estimatedTotal)}</span>
             </div>
