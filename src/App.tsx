@@ -7,6 +7,7 @@ import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import OrderPlacedPage from './pages/OrderPlacedPage'
+import OrderTrackingPage from './pages/OrderTrackingPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 
 // Set VITE_COMING_SOON=true (in .env / Vercel project settings) to show a
@@ -27,10 +28,12 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<ShopPage />} />
+          <Route path="/shop/:categoryId" element={<ShopPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/order-placed" element={<OrderPlacedPage />} />
+          <Route path="/track-order" element={<OrderTrackingPage />} />
         </Routes>
       </main>
       <Footer />

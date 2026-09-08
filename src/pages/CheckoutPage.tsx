@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { DISTRICTS, getShippingFee, FREE_SHIPPING_THRESHOLD } from '../data/shipping'
 import { formatCurrency } from '../utils/order'
-import { submitCheckout } from '../api/client'
-import type { CustomerDetails } from '../types'
+import { submitCheckout, validateDiscountCode } from '../api/client'
+import type { CustomerDetails, DiscountValidation } from '../types'
 
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart()
@@ -20,12 +20,19 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const [discountInput, setDiscountInput] = useState('')
+  const [appliedDiscount, setAppliedDiscount] = useState<DiscountValidation | null>(null)
+  const [discountError, setDiscountError] = useState<string | null>(null)
+  const [checkingDiscount, setCheckingDiscount] = useState(false)
+
   // Live estimate only, so the summary panel updates as the customer picks a
-  // district — the backend recomputes subtotal/shipping/total authoritatively
-  // from the database when the order is actually placed, so this can never
-  // be tampered with to get a cheaper price.
-  const estimatedShipping = getShippingFee(customer.district, subtotal)
-  const estimatedTotal = subtotal + estimatedShipping
+  // district or applies a code — the backend recomputes subtotal/discount/
+  // shipping/total authoritatively from the database when the order is
+  // actually placed, so none of this can be tampered with for a cheaper price.
+  const discountAmount = appliedDiscount?.valid ? appliedDiscount.discountAmount ?? 0 : 0
+  const discountedSubtotal = subtotal - discountAmount
+  const estimatedShipping = getShippingFee(customer.district, discountedSubtotal)
+  const estimatedTotal = discountedSubtotal + estimatedShipping
 
   if (items.length === 0) {
     return (
@@ -44,6 +51,31 @@ export default function CheckoutPage() {
     }
   }
 
+  async function handleApplyDiscount() {
+    if (!discountInput.trim()) return
+    setDiscountError(null)
+    setCheckingDiscount(true)
+    try {
+      const result = await validateDiscountCode(discountInput.trim(), subtotal)
+      if (result.valid) {
+        setAppliedDiscount(result)
+      } else {
+        setAppliedDiscount(null)
+        setDiscountError(result.reason || 'That code is not valid.')
+      }
+    } catch (err) {
+      setDiscountError(err instanceof Error ? err.message : 'Could not check that code.')
+    } finally {
+      setCheckingDiscount(false)
+    }
+  }
+
+  function handleRemoveDiscount() {
+    setAppliedDiscount(null)
+    setDiscountInput('')
+    setDiscountError(null)
+  }
+
   async function handlePlaceOrder(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -57,7 +89,8 @@ export default function CheckoutPage() {
     try {
       const result = await submitCheckout(
         items.map((i) => ({ productId: i.product.id, qty: i.qty })),
-        customer
+        customer,
+        appliedDiscount?.valid ? appliedDiscount.code : undefined
       )
       window.open(result.whatsappLink, '_blank', 'noopener,noreferrer')
       clearCart()
@@ -162,11 +195,47 @@ export default function CheckoutPage() {
               </li>
             ))}
           </ul>
+
+          <div className="mb-4 border-t border-slate-200 pt-4">
+            {appliedDiscount?.valid ? (
+              <div className="flex items-center justify-between rounded-lg bg-green-50 px-3 py-2 text-sm">
+                <span className="font-medium text-green-700">Code "{appliedDiscount.code}" applied</span>
+                <button type="button" onClick={handleRemoveDiscount} className="text-green-700 underline">
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  value={discountInput}
+                  onChange={(e) => setDiscountInput(e.target.value)}
+                  placeholder="Discount code"
+                  className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyDiscount}
+                  disabled={checkingDiscount}
+                  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600 disabled:opacity-60"
+                >
+                  {checkingDiscount ? '...' : 'Apply'}
+                </button>
+              </div>
+            )}
+            {discountError && <p className="mt-1 text-xs text-red-600">{discountError}</p>}
+          </div>
+
           <div className="space-y-1 border-t border-slate-200 pt-3 text-sm">
             <div className="flex justify-between text-slate-600">
               <span>Subtotal</span>
               <span>{formatCurrency(subtotal)}</span>
             </div>
+            {discountAmount > 0 && (
+              <div className="flex justify-between text-green-700">
+                <span>Discount</span>
+                <span>-{formatCurrency(discountAmount)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-slate-600">
               <span>Shipping ({customer.district})</span>
               <span>{estimatedShipping === 0 ? 'FREE' : formatCurrency(estimatedShipping)}</span>

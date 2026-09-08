@@ -23,6 +23,9 @@ export default function Navbar() {
           <NavLink to="/shop" className={linkClass}>
             Shop
           </NavLink>
+          <NavLink to="/track-order" className={linkClass}>
+            Track Order
+          </NavLink>
           <Link
             to="/cart"
             className="relative flex items-center gap-1 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-slate-700"

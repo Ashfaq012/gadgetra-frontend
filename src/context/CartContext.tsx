@@ -35,15 +35,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items])
 
+  // Client-side clamping is just a UX nicety (fewer round-trips to find out
+  // an item is sold out) — the backend re-checks stock authoritatively at
+  // checkout regardless, since stock can change between page load and then.
   function addToCart(product: Product, qty = 1) {
     setItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id)
       if (existing) {
-        return prev.map((i) =>
-          i.product.id === product.id ? { ...i, qty: i.qty + qty } : i
-        )
+        const newQty = Math.min(existing.qty + qty, product.stockQty)
+        return prev.map((i) => (i.product.id === product.id ? { ...i, qty: newQty } : i))
       }
-      return [...prev, { product, qty }]
+      return [...prev, { product, qty: Math.min(qty, product.stockQty) }]
     })
   }
 
@@ -56,7 +58,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeFromCart(productId)
       return
     }
-    setItems((prev) => prev.map((i) => (i.product.id === productId ? { ...i, qty } : i)))
+    setItems((prev) =>
+      prev.map((i) =>
+        i.product.id === productId ? { ...i, qty: Math.min(qty, i.product.stockQty) } : i
+      )
+    )
   }
 
   function clearCart() {

@@ -4,20 +4,20 @@ import { fetchProducts } from '../api/client'
 
 interface UseProductsResult {
   products: Product[]
-  categories: string[]
   loading: boolean
   error: string | null
 }
 
-/** Fetches the live catalog from the backend once on mount. */
-export function useProducts(): UseProductsResult {
+/** Fetches the live catalog from the backend, optionally filtered by category. */
+export function useProducts(categoryId?: string): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
-    fetchProducts()
+    setLoading(true)
+    fetchProducts(categoryId)
       .then((data) => {
         if (!cancelled) setProducts(data)
       })
@@ -30,9 +30,7 @@ export function useProducts(): UseProductsResult {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [categoryId])
 
-  const categories = Array.from(new Set(products.map((p) => p.category)))
-
-  return { products, categories, loading, error }
+  return { products, loading, error }
 }
