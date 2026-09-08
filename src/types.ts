@@ -11,7 +11,7 @@ export interface Product {
   categoryId: string
   category: string // display name, joined server-side
   price: number // in LKR
-  image: string
+  images: string[] // first is the cover/thumbnail image
   description: string
   stockQty: number
   inStock: boolean

@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <div className="group flex flex-col overflow-hidden rounded-xl border border-hairline bg-white transition-shadow hover:shadow-md">
       <Link to={`/product/${product.id}`} className="relative aspect-square overflow-hidden bg-paper">
         <img
-          src={product.image}
+          src={product.images[0]}
           alt={product.name}
           className={`h-full w-full object-cover transition-transform group-hover:scale-105 ${
             outOfStock ? 'grayscale' : ''

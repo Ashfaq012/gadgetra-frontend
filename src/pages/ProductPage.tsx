@@ -13,11 +13,13 @@ export default function ProductPage() {
   const [notFound, setNotFound] = useState(false)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+  const [activeImage, setActiveImage] = useState(0)
 
   useEffect(() => {
     if (!id) return
     setLoading(true)
     setNotFound(false)
+    setActiveImage(0)
     fetchProduct(id)
       .then(setProduct)
       .catch(() => setNotFound(true))
@@ -54,8 +56,30 @@ export default function ProductPage() {
       </Link>
 
       <div className="mt-4 grid gap-10 md:grid-cols-2">
-        <div className="aspect-square overflow-hidden rounded-xl bg-paper">
-          <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+        <div>
+          <div className="aspect-square overflow-hidden rounded-xl bg-paper">
+            <img
+              src={product.images[activeImage] ?? product.images[0]}
+              alt={product.name}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          {product.images.length > 1 && (
+            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+              {product.images.map((src, i) => (
+                <button
+                  key={src + i}
+                  onClick={() => setActiveImage(i)}
+                  aria-label={`Show image ${i + 1}`}
+                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors ${
+                    i === activeImage ? 'border-gold' : 'border-transparent hover:border-hairline'
+                  }`}
+                >
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>
