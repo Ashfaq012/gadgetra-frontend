@@ -25,46 +25,60 @@ export default function CartPage() {
 
       <div className="divide-y divide-hairline rounded-xl border border-hairline bg-white">
         {items.map(({ product, qty }) => (
-          <div key={product.id} className="flex items-center gap-4 p-4">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="h-20 w-20 rounded-lg object-cover"
-            />
-            <div className="flex-1">
-              <p className="font-semibold text-charcoal">{product.name}</p>
-              <p className="text-sm text-muted">{formatCurrency(product.price)} each</p>
-            </div>
-
-            <div className="flex items-center rounded-lg border border-hairline">
+          <div
+            key={product.id}
+            className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:gap-4"
+          >
+            <div className="flex items-start gap-4 sm:flex-1">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-20 w-20 shrink-0 rounded-lg object-cover"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-charcoal">{product.name}</p>
+                <p className="text-sm text-muted">{formatCurrency(product.price)} each</p>
+              </div>
               <button
-                onClick={() => updateQty(product.id, qty - 1)}
-                className="px-2 py-1 text-muted hover:text-charcoal"
-                aria-label="Decrease quantity"
+                onClick={() => removeFromCart(product.id)}
+                className="shrink-0 text-muted hover:text-red-500 sm:hidden"
+                aria-label={`Remove ${product.name}`}
               >
-                −
-              </button>
-              <span className="w-8 text-center text-sm font-medium text-charcoal">{qty}</span>
-              <button
-                onClick={() => updateQty(product.id, qty + 1)}
-                className="px-2 py-1 text-muted hover:text-charcoal"
-                aria-label="Increase quantity"
-              >
-                +
+                ✕
               </button>
             </div>
 
-            <p className="w-24 text-right font-semibold text-charcoal">
-              {formatCurrency(product.price * qty)}
-            </p>
+            <div className="flex items-center justify-between gap-4 pl-24 sm:pl-0">
+              <div className="flex items-center rounded-lg border border-hairline">
+                <button
+                  onClick={() => updateQty(product.id, qty - 1)}
+                  className="px-2 py-1 text-muted hover:text-charcoal"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+                <span className="w-8 text-center text-sm font-medium text-charcoal">{qty}</span>
+                <button
+                  onClick={() => updateQty(product.id, qty + 1)}
+                  className="px-2 py-1 text-muted hover:text-charcoal"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
 
-            <button
-              onClick={() => removeFromCart(product.id)}
-              className="text-muted hover:text-red-500"
-              aria-label={`Remove ${product.name}`}
-            >
-              ✕
-            </button>
+              <p className="text-right font-semibold text-charcoal sm:w-24">
+                {formatCurrency(product.price * qty)}
+              </p>
+
+              <button
+                onClick={() => removeFromCart(product.id)}
+                className="hidden text-muted hover:text-red-500 sm:block"
+                aria-label={`Remove ${product.name}`}
+              >
+                ✕
+              </button>
+            </div>
           </div>
         ))}
       </div>
